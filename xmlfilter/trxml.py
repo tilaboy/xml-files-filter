@@ -3,20 +3,20 @@ import xml.etree.ElementTree as ET
 import os
 import re
 
-class xml():
-    def __init__(self, xml_file=None):
-        self.xml_file = xml_file
+class trxml():
+    def __init__(self, trxml_file=None):
+        self.trxml_file = trxml_file
         
-        self.size = os.path.getsize(xml_file)
-        print('create a new xml object from {}'.format(self.xml_file))
+        self.size = os.path.getsize(trxml_file)
+        print('create a new trxml object from {}'.format(self.trxml_file))
 
-        with open(xml_file, 'r') as f:
-            xml_string = f.read()
-            self.xml_string = xml_string
-            print(xml_string)
+        with open(trxml_file, 'r') as f:
+            trxml_string = f.read()
+            self.trxml_string = trxml_string
+            print(trxml_string)
 
         try:
-            tree = ET.parse(xml_file)
+            tree = ET.parse(trxml_file)
             root = tree.getroot()
             print ('found root {}'.format(root.tag))
             self.topLevelTag = root.tag
@@ -40,11 +40,3 @@ class xml():
     def get_pathtype(self):
         file_type = self.topLevelObj.get('path', default='standard') 
         return file_type
-
-
-
-        
-        
-        
-
-
