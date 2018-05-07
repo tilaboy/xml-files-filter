@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<begin DP_HTML_PRESENTATION="1" account="davinci" chksum="341c65045ace57def28f88b397c913f3" content_type="application/pdf" correlationid="4FC19F8D54496C321CC2F71EE63FEC71_1507550477135" filename="davinci-davinci-04f27356e39b2e91-1-2017-10-09T120117-guess-PreProcessor.txtorin" id="1" lang="english" ocr_policy="never" source="application/pdf" useoutputenc="utf-8-strict" username="davinci">
+   Pierre GONDOIS
+
+   Address:       Le Floucat
+                  38 Allée des Pins
+                  13009 Marseille
+
+   Contact:       e-mail: pierre_gondois@orange.fr
+                  Phone: (+33)6 15 51 40 41
+                  LinkedIn: fr.linkedin.com/in/pierre-gondois
+
+
+
+
+   Experience
+
+
+ Internships:             • February-August  2017 (6 months)   at Apsys-Airbus (IT security audit company)    ,
+                            Toulouse
+                            The purpose of this internship was to evaluate the available and implementable
+                            solutions in order to create a unidirectional Ethernet connection. To simplify the
+                            certification of the solution, priority was given to hardware solutions, which implied to
+                            physically cut wires. The internship led to a prototyped demonstration on a
+                            Raspberry Pi board.
+                          • Summer 2016 :   2.5 months  at IDA (research institute), TU Braunschweig  , Germany
+                            Python  implementation of a random, parameterized   system generator    from an
+                            existing project in Java. The generator was intended to provide a hardware platform
+                            and software applications in the field of embedded systems to evaluate the
+                            performance of scheduling, mapping or verification algorithms.
+                          • Summer 2015 :   4 weeks,  Particule Physics Center in Marseille
+                            Operator at the library of research laboratory
+Scholar projects:
+                          • Implementation of a hardware accelerator   on FPGA   for the Simon encryption
+                            algorithm from the NSA (project just started in October).
+                          • Implementation of a Semi-direct Visual Odometry     (SVO) experiment using  Robot
+                            OS  on an Odroid-C2 board   . The experiment was embedded on a    handmade
+                            drone . The SVO algorithm was developed by the uzh-rpg.
+                          • Implementation of a Deca  compiler  in Java during an intensive month in a team.
+                          • Several projects in C : games, memory management, threads, creation of process,
+                            basic kernel for i386 processor.
+                          • Project for the startup Enerstone and my engineering school. Creation of a state of
+                            charge display of a battery on a STM32F0 board  .
+   Education
+
+
+      2015 - 2017            Engineering school Phelma  /Ensimag   – Embedded Systems and Software
+
+      2014 - 2015            Engineering school Phelma   – Physics, Electronics and Telecommunication
+
+      2012 - 2014            Higher School Preparatory Classes  PCSI/PC*    Lycée Thiers Marseille
+
+      2011 - 2012            French « Baccalauréat »   in Science – Mathematical option – Honors Marseille
+
+
+
+         Skills
+
+
+  Coding languages:          Python, Java, C (notions C++), Assembly, bash, VHDL (notions)
+  Informatics:               Git, Linux, Unix shell, bases in cryptography
+  Languages:                 English (B2 certified), German (notions)
+  Others:                    Driver’s license / car
+
+</begin>
