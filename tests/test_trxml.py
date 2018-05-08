@@ -1,14 +1,14 @@
 import os
 
 from unittest import TestCase
-from xmlfilter.trxml import trxml
+from xmlfilter.TKtrxml import TKtrxml
 
 class TrxmlTestCases (TestCase):
     'unit tests for trxml object'
     def setUp(self):
         local_dir = 'tests/resource'
         trxml_file = os.path.join(local_dir, 'test.trxml')
-        self.trxmlObj = trxml(trxml_file)
+        self.trxmlObj = TKtrxml(trxml_file)
 
     def test_xml_account(self):
         lang = self.trxmlObj.get_account()

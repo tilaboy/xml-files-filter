@@ -1,14 +1,14 @@
 import os
 
 from unittest import TestCase
-from xmlfilter.xml import xml
+from xmlfilter.TKxml import TKxml
 
 class XmlTestCases (TestCase):
     'unit tests for xml object'
     def setUp(self):
         local_dir = 'tests/resource'
         xml_file = os.path.join(local_dir, 'test.xml')
-        self.xmlObj = xml(xml_file)
+        self.xmlObj = TKxml(xml_file)
 
     def test_xml_account(self):
         lang = self.xmlObj.get_account()
