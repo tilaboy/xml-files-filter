@@ -8,7 +8,7 @@ class trxml():
         self.trxml_file = trxml_file
 
         self.size = os.path.getsize(trxml_file)
-        print('create a new trxml object from {}'.format(self.trxml_file))
+        print('creating a new trxml object from {}'.format(self.trxml_file))
 
         with open(trxml_file, 'r') as f:
             trxml_string = f.read()

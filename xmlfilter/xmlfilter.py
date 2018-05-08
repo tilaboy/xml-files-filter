@@ -5,49 +5,78 @@ import argparse
 from os import listdir
 import os
 from os.path import isfile, join
+from TKxml import TKxml
+from TKtrxml import TKtrxml
+from random import shuffle
+
+def validate_file(file_obj, args):
+    valid = 0
+    if file_obj.get_size() > args.size and file_obj.get_lang == args.lang and file_obj.get_orig_filetype() in allowed_types and file_obj.pathtype == args.pathtype:
+        valid = 1
+    else: 
+        print("not valid")
+
+    if args.country and valid == 1:
+        country = file_obj.get_country()
+        if country == args.country:
+            print ("country matched")
+        else:
+            print ("country not matched: {} <> {}".format(country, args.country))
+            valid = 0
+    return valid
+    
 
 
 def get_args():
     parser = argparse.ArgumentParser(description='read the list of xml files, filter on size, max number of documents from one account, filter fixed format, and language, return a sample of data, and filter against a given list')
     parser.add_argument('--input_dir', help='dir contains all xml or trxml to filter')
     parser.add_argument('--input_type', help='type of the file to filter, xml or trxml')
-    parser.add_argument('--lang', help='language to filter', type=str)
+    parser.add_argument('--lang', help='language to filter on', type=str)
+    parser.add_argument('--country', help='country to filter on', type=str)
     parser.add_argument('--number', help='number of CVs', type=int)
     parser.add_argument('--size', help='minimal document size, in kb', type=int)
-    parser.add_argument('--noFixedFormat', help='filter out all fixed format document', action='store_true')
-    parser.add_argument('--onlyWordOrPDF', help='filter out all document except word and pdf', action='store_true')
+    parser.add_argument('--pathtype', help='filter out on path type', type=str, default='standard')
     return parser.parse_args()
 
 def main(args):
-    xml_dir = args.xml_dir
-    files = [join(xml_dir, f) for f in listdir(xml_dir) if isfile(join(xml_dir, f))]
+    input_dir = args.input_dir
+    files = []
+    for f in listdir(input_dir):
+        if isfile(join(input_dir, f)):
+            files.append(join(input_dir, f))
+
+    shuffle(files)
+
+    #files = [join(input_dir, f) for f in listdir(input_dir) if isfile(join(input_dir, f))]
     allowed_types = ("pdf", "msword")
     accounts = {}
+    max_per_account = int(args.number * 0.05)
     for file_path in files:
-        # print("checking file {}".format(file_path))
-        is_good_size = size_ok(file_path, args.size)
-        if not is_good_size:
-            continue
+        print("checking file {}".format(file_path))
+        if args.input_type == 'xml':
+            try:
+                file_obj = TKxml(file_path)
+            except Exception as e:
+                print("ERROR: not able to create xml object from {}".format(file_path))
+                print(e)
 
-        with open(file_path) as f:
-            begin_line = f.readline()
-            begin_line = f.readline()
-        # print(begin_line)
-        is_good_lang = lang_match(begin_line, args.lang)
-        is_good_type = type_match(begin_line, allowed_types)
-        is_not_ff = format_match(begin_line)
-        if is_good_lang and is_good_type and is_not_ff:
-            account = get_account(begin_line)
-            if account:
-                if account in accounts:
-                    accounts[account] = accounts[account] + 1
-                else:
-                    accounts[account] = 0
-                if accounts[account] < 1000:
-                    print (file_path)
-            else:
+        if args.input_type == 'trxml':
+            try:
+                file_obj = TKtrxml(file_path)
+            except Exception as e:
+                print("ERROR: not able to create trxml object from {}".format(file_path))
+                print(e)
+        
+        valid_file = validate_file(file_obj, args)
+        if valid_file:
+            account = file_obj.get_account()
+            if accounts[account] < max_per_account:
                 print(file_path)
+                accounts[account] = accounts[account] + 1
+
+        print ( accounts )
 
 if __name__ == '__main__':
     args = get_args()
+    #TODO: country checking is not supported for xml
     main(args)
