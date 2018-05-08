@@ -462,8 +462,8 @@ ICI    Independent Expert Report on the Merger of ICI&apos;s and Incitec&apos;s 
 			<Field key="city" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
 			<Field key="country" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
 			<Field key="country_nodefault" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
-			<Field key="countrycode" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
-			<Field key="countrycode_nodefault" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
+			<Field key="countrycode" docCoords="7.0-7.16" docMarkupId="456"><Value></Value>US</Field>
+			<Field key="countrycode_nodefault" docCoords="7.0-7.16" docMarkupId="456"><Value>US</Value></Field>
 			<Field key="countrylocal" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
 			<Field key="countrylocal_nodefault" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
 			<Field key="extra_info" docCoords="7.0-7.16" docMarkupId="456"><Value></Value></Field>
