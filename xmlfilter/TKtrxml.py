@@ -6,6 +6,9 @@ import re
 class TKtrxml():
     def __init__(self, trxml_file=None):
         self.trxml_file = trxml_file
+        self.filename = os.path.basename(trxml_file)
+        self.orig_filename = re.sub("\.trxml", "", self.filename)
+        self.orig_filename = re.sub("\.xml", "", self.orig_filename)
 
         self.size = os.path.getsize(trxml_file)
         #print('create a new trxml object from {}'.format(self.trxml_file))

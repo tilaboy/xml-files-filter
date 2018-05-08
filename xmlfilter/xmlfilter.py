@@ -11,10 +11,24 @@ from random import shuffle
 
 def validate_file(file_obj, args):
     valid = 0
-    if file_obj.get_size() > args.size and file_obj.get_lang == args.lang and file_obj.get_orig_filetype() in allowed_types and file_obj.pathtype == args.pathtype:
+    allowed_types = ("pdf", "msword")
+    if args.file_type == 'trxml':
+        xml_file = os.path.join('/home/chao/workspace/data_2017/CVs/random_100k/xml/', file_obj.orig_filename + '.xml')
+        try:
+            xmlfile_obj = TKxml(xml_file)
+        except Exception as e:
+            print("ERROR: not able to create xml object from {}".format(xml_file))
+            print(e)
+
+    if xmlfile_obj.get_size() > args.size and xmlfile_obj.get_lang() == args.lang and xmlfile_obj.get_orig_filetype() in allowed_types and xmlfile_obj.get_pathtype() == args.pathtype:
         valid = 1
-    else: 
-        print("not valid")
+    else:
+
+        print("NOT VALID:")
+        print("\tsize: {}".format(xmlfile_obj.get_size()))
+        print("\tlang: {}".format(xmlfile_obj.get_lang()))
+        print("\ttype: {}".format(xmlfile_obj.get_orig_filetype()))
+        print("\tpath: {}".format(xmlfile_obj.get_pathtype()))
 
     if args.country and valid == 1:
         country = file_obj.get_country()
@@ -24,7 +38,7 @@ def validate_file(file_obj, args):
             print ("country not matched: {} <> {}".format(country, args.country))
             valid = 0
     return valid
-    
+
 
 
 def get_args():
@@ -48,7 +62,6 @@ def main(args):
     shuffle(files)
 
     #files = [join(input_dir, f) for f in listdir(input_dir) if isfile(join(input_dir, f))]
-    allowed_types = ("pdf", "msword")
     accounts = {}
     max_per_account = int(args.number * 0.05)
     for file_path in files:
@@ -66,7 +79,7 @@ def main(args):
             except Exception as e:
                 print("ERROR: not able to create trxml object from {}".format(file_path))
                 print(e)
-        
+
         valid_file = validate_file(file_obj, args)
         if valid_file:
             account = file_obj.get_account()

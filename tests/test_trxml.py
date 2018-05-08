@@ -10,7 +10,13 @@ class TrxmlTestCases (TestCase):
         trxml_file = os.path.join(local_dir, 'test.trxml')
         self.trxmlObj = TKtrxml(trxml_file)
 
-    def test_xml_account(self):
+    def test_trxml_filename(self):
+        filename = self.trxmlObj.filename
+        orig_filename = self.trxmlObj.orig_filename
+        assert filename == 'test.trxml'
+        assert orig_filename == 'test'
+
+    def test_trxml_account(self):
         lang = self.trxmlObj.get_account()
         assert lang == 'derwentexec_cv'
 
