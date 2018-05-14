@@ -1,0 +1,9 @@
+{
+  "input_type": "xml",
+  "input_dir": "foo",
+  "nr_docs": 2000,
+  "trxml_selectors": [
+
+  ],
+  "min_size": 2
+}
