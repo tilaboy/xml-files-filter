@@ -1,9 +1,13 @@
 {
   "input_type": "xml",
-  "input_dir": "foo",
   "nr_docs": 2000,
-  "trxml_selectors": [
-
-  ],
+  "attribute_filters": {
+      "begin": {
+        "lang": "english",
+        "content_type": ["application/pdf", "application/doc"],
+        "path": "standard"
+      }
+  },
+  "field_selector": [],
   "min_size": 2
 }

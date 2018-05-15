@@ -14,19 +14,19 @@ class Xml():
             tree = ET.parse(xml_file)
             root = tree.getroot()
 
-            assert re.match('begin|TextractorResult', root.tag), 'The topLevelTag is not begin'
-
             self.top_level_tag = root.tag
             self.top_level_obj = root
 
-        except Exception as e:
+        except Exception as error:
             print("ERROR: parse failed\n")
-            raise(e)
+            raise(error)
         else:
             pass
 
         self.file_size = int ( os.path.getsize(xml_file) / 1024 )
 
+    def get_customer_account(self):
+        return self.top_level_obj.get('account')
 
     def get_orig_filename(self):
         return re.sub("\.xml", "", self.input_filename)
