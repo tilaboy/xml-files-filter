@@ -6,16 +6,19 @@ import re
 from xml_filter.xml import Xml
 
 class Trxml(Xml):
+    '''trxml class:
+    trxml tree object generated from trxml file
+    '''
 
     def get_orig_filename(self):
         return re.sub("\.trxml", "", self.input_filename)
 
     def get_customer_account(self):
-        working_trxml_obj = self.trxml_obj.get_working_entity('Document')
+        working_trxml_obj = self.get_working_entity('Document')
         return working_trxml_obj.get('account')
 
     def get_country(self):
-        working_trxml_obj = self.trxml_obj.get_working_entity('DocumentStructure')
+        working_trxml_obj = self.get_working_entity('DocumentStructure')
         xpath_country = "ItemGroup[@key='{}']/Item[@index='{}']/Field[@key='{}']/Value".\
         format('address', '0', 'countrycode_nodefault')
         return working_trxml_obj.find(xpath_country).text

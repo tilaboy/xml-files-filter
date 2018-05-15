@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import argparse
 from os import listdir
@@ -14,36 +13,74 @@ from xml_filter.config import Config
 
 def validate_file(file_obj, config):
     valid = 1
-    for work_entity_tag, filters in config[attribute_filters].items():
-        print ('work entity tag: {}'.format(work_entity_tag))
+
+    attribute_filters = config.get('attribute_filters', {})
+    for work_entity_tag, filters in attribute_filters.items():
         working_entity = file_obj.get_working_entity(work_entity_tag)
-        if not validate_field(working_entity, filters):
+        if not validate_attributes(working_entity, filters):
             valid = 0
             break
 
+    field_selectors = config.get('field_selectors', {})
+    for work_entity_tag, selectors in field_selectors.items():
+        working_entity = file_obj.get_working_entity(work_entity_tag)
+        if not validate_fields(working_entity, selectors):
+            valid = 0
+            break
+        
+        
     return valid
 
-def validate_field(working_entity, filters):
+def validate_fields(working_entity, selectors):
     valid = 1
-    for attribute_name, attribute_value in filters.items():
-        print('check {} for value {}'.format(attribute_name, attribute_value))
-        if not working_entity.get(attribute_name) == attribute_value:
+    for field_name, selector in selectors.items():
+        retrieved = working_entity.find(selector.get('xpath')).text
+        #print("field {}: [{}] with [{}]".format(field_name, retrieved, selector.get('value')))
+        if retrieved != selector.get('value'):
             valid = 0
             break
+    return valid
 
+
+def validate_attributes(working_entity, filters):
+    valid = 1
+    for attribute_name, attribute_dic in filters.items():
+        retrieved = get_attribute(working_entity, attribute_name, attribute_dic)
+        #print("attri {}: [{}] with [{}]".format(attribute_name, retrieved, attribute_dic.get('value')))
+        if not validate_attribute(retrieved, attribute_dic.get('value')):
+            valid = 0
+            break
+    return valid
+
+def get_attribute (working_entity, attribute_name, attribute_dic):
+    retrieved = None
+    if attribute_dic.get('default'):
+        retrieved = working_entity.get(attribute_name, default=attribute_dic['default'])
+    else:
+        retrieved = working_entity.get(attribute_name)
+    return retrieved
+
+def validate_attribute(retrieved, expected):
+    valid = 0
+
+    if isinstance(expected, list):
+        if retrieved in expected:
+            valid = 1
+    elif isinstance(expected, str):
+        if retrieved == expected:
+            valid = 1
     return valid
 
 
 def get_args():
     parser = argparse.ArgumentParser(description='read the list of xml or trxml\
-    files, generate a list of documents which is a random subset fit the requirements')
+    files, generate a list of documents which is a random subset selected using the specified requirements')
 
     parser.add_argument('--config', help='config file to config the selectors', type=str)
     parser.add_argument('--input_dir', help='dir contains all xml or trxml to filter',\
      type=str)
     parser.add_argument('--output_file', help='type of the file to filter, xml or trxml',\
      type=str, default='select_filelist.txt')
-    parser.add_argument('--filelist_to_skip', help='language to filter on', type=str)
     return parser.parse_args()
 
 def get_files(input_dir):
@@ -52,6 +89,8 @@ def get_files(input_dir):
         if isfile(join(input_dir, f)):
             files.append(join(input_dir, f))
     return files
+
+
 
 def get_file_obj(input_type, file_path):
     if input_type == 'xml':
@@ -77,24 +116,31 @@ def main(args):
     shuffle(files)
 
     accounts = {}
-    max_per_account = int(args.number * config[max_perc])
+    max_per_account = int(config['nr_docs'] * config['max_per_account'])
     output_fh = open(args.output_file,'w')
     for file_path in files:
-        #print("checking file {}".format(file_path))
-        file_obj = get_file_obj(config[input_type], file_path)
+        file_size = os.path.getsize(file_path)
+        if file_size < config['min_size']:
+            continue
+        file_obj = get_file_obj(config['input_type'], file_path)
         is_valid_file = validate_file(file_obj, config)
         if is_valid_file:
             account = file_obj.get_customer_account()
-            if accounts[account] < max_per_account:
-                write(output_fh, file_path)
-            else:
-                pass
-            accounts[account] = accounts[account] + 1
 
-    close(output_fh)
+            if account is None:
+                output_fh.write(file_path + "\n")
+            else:
+                if not accounts.get(account):
+                    accounts[account] = 0
+                if accounts[account] < max_per_account:
+                    output_fh.write(file_path + "\n")
+                else:
+                    pass
+                accounts[account] = accounts[account] + 1
+
+    output_fh.close()
 
 
 if __name__ == '__main__':
     args = get_args()
-    #TODO: country checking is not supported for xml
     main(args)

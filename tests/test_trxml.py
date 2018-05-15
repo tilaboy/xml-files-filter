@@ -13,7 +13,6 @@ class TrxmlTestCases (TestCase):
 
     def test_trxml_filename(self):
         '''Test: test the filename, original filename, filesize'''
-        assert self.trxml_obj.file_size == 3, 'get file size'
         assert self.trxml_obj.input_filename == 'test.trxml', 'get filename'
         assert self.trxml_obj.orig_filename == 'test', 'get original filename'
 

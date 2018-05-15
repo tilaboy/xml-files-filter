@@ -13,7 +13,6 @@ class XmlTestCases (TestCase):
 
     def test_xml_file(self):
         '''Test: test the filename, original filename, filesize'''
-        assert self.xml_obj.file_size == 0, 'get file size'
         assert self.xml_obj.input_filename == 'test.xml', 'get filename'
         assert self.xml_obj.orig_filename == 'test', 'get original filename'
 
