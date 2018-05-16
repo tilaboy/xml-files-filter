@@ -11,16 +11,15 @@ class Config():
                 config.update(json.load(config_fh))
             except Exception as error:
                 print("ERROR: parse failed\n")
-                raise(error)
+                raise RuntimeError(error)
         self.config = config
         self.config_validation()
 
     def config_validation(self):
         if self.config.get('input_type') == 'xml' and self.config.get('field_selectors'):
-            raise('ERROR: Config issue.\n\tfield_selector is defined for xml, but it is\
-            only valid for trxml')
+            raise AttributeError('ERROR: Config issue.\n\
+            field_selector is defined for xml, but it is only valid for trxml')
 
         if self.config.get('max_per_account') and not self.config.get('nr_docs'):
-            raise('ERROR: Config issue.\n\tfield_selector is defined for xml, but it is\
-            only valid for trxml')
-
+            raise AttributeError('ERROR: Config issue.\n\
+            field_selector is defined for xml, but it is only valid for trxml')

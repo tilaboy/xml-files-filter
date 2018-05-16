@@ -24,7 +24,7 @@ def validate_file(file_obj, config):
         working_entity = file_obj.get_working_entity(work_entity_tag)
         if not validate_fields(working_entity, selectors):
             return 0
-        
+
     return 1
 
 def validate_fields(working_entity, selectors):
@@ -118,8 +118,18 @@ def main(args):
     shuffle(files)
 
     accounts = {}
-    max_per_account = int(config['nr_docs'] * config['max_per_account'])
+    nr_all_files = len(files)
+
+    max_output_files = nr_all_files
+    if config.get('nr_docs'):
+        max_output_files = config['nr_docs']
+
+    max_per_account = nr_all_files
+    if config.get('nr_docs') and config.get('max_per_account'):
+        max_per_account = int(config['nr_docs'] * config['max_per_account'])
+
     output_fh = open(args.output_file,'w')
+    nr_output_files = 0
     for file_path in files:
         file_size = os.path.getsize(file_path)
         if file_size < config['min_size']:
@@ -131,15 +141,20 @@ def main(args):
 
             if account is None:
                 output_fh.write(file_path + "\n")
+                nr_output_files += 1
             else:
                 if not accounts.get(account):
                     accounts[account] = 0
                 if accounts[account] < max_per_account:
                     output_fh.write(file_path + "\n")
+                    nr_output_files += 1
                 else:
                     pass
                 accounts[account] = accounts[account] + 1
 
+        if nr_output_files == max_output_files:
+            break
+    print ("found {} files".format(nr_output_files))
     output_fh.close()
 
 

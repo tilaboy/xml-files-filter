@@ -20,7 +20,7 @@ class Xml():
 
         except Exception as error:
             print("ERROR: parse xml file {} failed".format(xml_file))
-            raise(error)
+            raise RuntimeError(error)
         else:
             pass
 
