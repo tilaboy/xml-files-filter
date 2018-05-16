@@ -78,9 +78,12 @@ def get_args():
 
     parser.add_argument('--config', help='config file to config the selectors', type=str)
     parser.add_argument('--input_dir', help='dir contains all xml or trxml to filter',\
-     type=str)
+                        type=str)
     parser.add_argument('--output_file', help='type of the file to filter, xml or trxml',\
-     type=str, default='select_filelist.txt')
+                        type=str, default='select_filelist.txt')
+    parser.add_argument('--files_to_ignore', help='a list of filenames to ignore',\
+                        type=str, default=None)
+
     return parser.parse_args()
 
 def get_files(input_dir):
@@ -89,7 +92,6 @@ def get_files(input_dir):
         if isfile(join(input_dir, f)):
             files.append(join(input_dir, f))
     return files
-
 
 
 def get_file_obj(input_type, file_path):

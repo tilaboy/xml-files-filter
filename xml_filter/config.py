@@ -13,8 +13,14 @@ class Config():
                 print("ERROR: parse failed\n")
                 raise(error)
         self.config = config
-
         self.config_validation()
 
     def config_validation(self):
-        pass
+        if self.config.get('input_type') == 'xml' and self.config.get('field_selectors'):
+            raise('ERROR: Config issue.\n\tfield_selector is defined for xml, but it is\
+            only valid for trxml')
+
+        if self.config.get('max_per_account') and not self.config.get('nr_docs'):
+            raise('ERROR: Config issue.\n\tfield_selector is defined for xml, but it is\
+            only valid for trxml')
+
