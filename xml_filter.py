@@ -81,7 +81,7 @@ def get_args():
                         type=str)
     parser.add_argument('--output_file', help='type of the file to filter, xml or trxml',\
                         type=str, default='select_filelist.txt')
-    parser.add_argument('--files_to_ignore', help='a list of filenames to ignore',\
+    parser.add_argument('--filelist_to_ignore', help='a file contains a list of filenames to ignore',\
                         type=str, default=None)
 
     return parser.parse_args()
@@ -128,13 +128,23 @@ def main(args):
     if config.get('nr_docs') and config.get('max_per_account'):
         max_per_account = int(config['nr_docs'] * config['max_per_account'])
 
+    files_to_ignore = list()
+    if args.filelist_to_ignore:
+        files_to_ignore = [line.strip() for line in open(args.filelist_to_ignore, 'r')]
+
     output_fh = open(args.output_file,'w')
     nr_output_files = 0
+    nr_checked_files = 0
     for file_path in files:
+        nr_checked_files += 1
         file_size = os.path.getsize(file_path)
         if file_size < config['min_size']:
             continue
         file_obj = get_file_obj(config['input_type'], file_path)
+
+        if file_obj.input_filename in files_to_ignore or file_obj.orig_filename in files_to_ignore:
+            continue
+
         is_valid_file = validate_file(file_obj, config)
         if is_valid_file:
             account = file_obj.get_customer_account()
@@ -154,7 +164,7 @@ def main(args):
 
         if nr_output_files == max_output_files:
             break
-    print ("found {} files".format(nr_output_files))
+    print ("found {} valid files in {} files".format(nr_output_files, nr_checked_files))
     output_fh.close()
 
 
